@@ -34,7 +34,11 @@ module Enumerable
   def my_all?(pattern = nil)
     unless pattern.nil?
       my_each do |x|
-        return false if pattern != x
+        if pattern === x
+          # do nothing
+        else
+          return false
+        end
       end
       return true
     end
@@ -48,5 +52,26 @@ module Enumerable
       return false unless yield x
     end
     true
+  end
+
+  def my_any?(pattern = nil)
+    unless pattern.nil?
+      my_each do |x|
+        if pattern === x
+          return true
+        else
+          return false
+        end
+      end
+    end
+    unless block_given?
+      my_each do |x|
+        return true if x
+      end
+    end
+    my_each do |x|
+      return true if yield x
+    end
+    false
   end
 end

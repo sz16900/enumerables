@@ -29,3 +29,12 @@ p %w[ant bear cat].my_all?(/t/)
 p [1, 2i, 3.14].all?(Numeric)
 p [nil, true, 99].my_all?
 p [].my_all?
+
+#my_any?
+p 'my_any?'
+p %w[ant bear cat].any? { |word| word.length >= 3 }
+p %w[ant bear cat].any? { |word| word.length >= 4 }
+p %w[ant bear cat].any?(/d/)
+p [nil, true, 99].any?(Integer) 
+p [nil, true, 99].any? 
+p [].any?
