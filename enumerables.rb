@@ -1,6 +1,7 @@
 module Enumerable
   def my_each
     return enum_for(:my_each) unless block_given?
+
     index = 0
     while index < size
       yield(self[index])
@@ -11,6 +12,7 @@ module Enumerable
 
   def my_each_with_index
     return enum_for(:my_each_with_index) unless block_given?
+
     index = 0
     while index < size
       yield(self[index], index)
@@ -22,12 +24,29 @@ module Enumerable
   def my_select
     select_array = []
     return enum_for(:my_select) unless block_given?
-    self.my_each do |x|
-        if yield x
-            select_array << x
-        end
+
+    my_each do |x|
+      select_array << x if yield x
     end
     select_array
   end
 
+  def my_all?(pattern = nil)
+    unless pattern.nil?
+      my_each do |x|
+        return false if pattern != x
+      end
+      return true
+    end
+    unless block_given?
+      my_each do |x|
+        return false unless x
+      end
+      true
+    end
+    my_each do |x|
+      return false unless yield x
+    end
+    true
+  end
 end
