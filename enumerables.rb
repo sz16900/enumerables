@@ -94,7 +94,23 @@ module Enumerable
     true
   end
 
+  def my_count(items = nil)
+    unless pattern.nil?
+      repetitions = 0
+      my_each do |x|
+        repetitions += 1 if items == x
+      end
+      return repetitions
+    end
+    unless block_given?
+      repetitions = 0
+      my_each do |x|
+        repetitions += 1 if (yield x) == x
+      end
+      return repetitions
+    end
+    counting = 0
+    counting += 1 while counting < size
+    counting
+  end
 end
-
-
-

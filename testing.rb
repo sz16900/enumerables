@@ -49,3 +49,10 @@ p [].none? #=> true
 p [nil].none? #=> true
 p [nil, false].none? #=> true
 p [nil, false, true].none? #=> false
+
+# my_count
+p 'my_count'
+ary = [1, 2, 4, 2]
+p ary.count #=> 4
+p ary.count(2) #=> 2
+p ary.count(&:even?) #=> 3
