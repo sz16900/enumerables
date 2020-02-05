@@ -30,11 +30,22 @@ p [1, 2i, 3.14].all?(Numeric)
 p [nil, true, 99].my_all?
 p [].my_all?
 
-#my_any?
+# my_any?
 p 'my_any?'
 p %w[ant bear cat].any? { |word| word.length >= 3 }
 p %w[ant bear cat].any? { |word| word.length >= 4 }
 p %w[ant bear cat].any?(/d/)
-p [nil, true, 99].any?(Integer) 
-p [nil, true, 99].any? 
+p [nil, true, 99].any?(Integer)
+p [nil, true, 99].any?
 p [].any?
+
+# my_none?
+p 'my_none?'
+p %w[ant bear cat].none? { |word| word.length == 5 } #=> true
+p %w[ant bear cat].none? { |word| word.length >= 4 } #=> false
+p %w[ant bear cat].none?(/d/) #=> true
+p [1, 3.14, 42].none?(Float) #=> false
+p [].none? #=> true
+p [nil].none? #=> true
+p [nil, false].none? #=> true
+p [nil, false, true].none? #=> false
