@@ -118,12 +118,62 @@ module Enumerable
     return enum_for(:my_count) unless block_given?
 
     arr = []
-    self.each do |x|
+    each do |x|
       arr << (yield x)
       yield x
     end
     arr
   end
-end
 
-# p (1..4).my_map {|x| x*x}
+  def my_inject(symbolic = nil, value_given = nil)
+    unless symbolic.nil?
+      if symbolic.class == Integer && !value_given.nil?
+        # switch values because paramaters changed
+        symbol = value_given
+        accumulator = symbolic
+      elsif symbolic.class == Integer && value_given.nil?
+        accumulator = symbolic
+        each do |x|
+          accumulator = yield(accumulator, x)
+        end
+        return accumulator
+      elsif symbolic.class == Symbol && value_given.nil?
+        symbol = symbolic
+        accumulator = 0
+      end
+      case symbol
+      when :+
+        each do |x|
+          accumulator += x
+        end
+      when :-
+        each do |x|
+          accumulator -= x
+        end
+      when :*
+        each do |x|
+          accumulator *= x
+        end
+      when :/
+        each do |x|
+          accumulator /= x
+        end
+      end
+      return accumulator
+    end
+    # the block
+    starter = false
+    each do |x|
+      if starter == false
+        starter = true
+        accumulator = if x.class == Integer
+                        0
+                      else
+                        x
+                      end
+      end
+      accumulator = yield(accumulator, x)
+    end
+    accumulator
+  end
+end
