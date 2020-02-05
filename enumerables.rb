@@ -113,4 +113,17 @@ module Enumerable
     counting += 1 while counting < size
     counting
   end
+
+  def my_map
+    return enum_for(:my_count) unless block_given?
+
+    arr = []
+    self.each do |x|
+      arr << (yield x)
+      yield x
+    end
+    arr
+  end
 end
+
+# p (1..4).my_map {|x| x*x}

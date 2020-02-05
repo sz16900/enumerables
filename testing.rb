@@ -56,3 +56,9 @@ ary = [1, 2, 4, 2]
 p ary.count #=> 4
 p ary.count(2) #=> 2
 p ary.count(&:even?) #=> 3
+
+# my_map
+p 'my_map'
+arr = [1,2,3,4,5]
+p arr.my_map {|x| x * x}
+p (1..2).my_map {|x| x * x}
