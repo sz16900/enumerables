@@ -34,11 +34,7 @@ module Enumerable
   def my_all?(pattern = nil)
     unless pattern.nil?
       my_each do |x|
-        if pattern === x
-          # do nothing
-        else
-          return false
-        end
+        return false unless pattern === x
       end
       return true
     end
@@ -57,12 +53,9 @@ module Enumerable
   def my_any?(pattern = nil)
     unless pattern.nil?
       my_each do |x|
-        if pattern === x
-          return true
-        else
-          return false
-        end
+        return true if pattern === x
       end
+      return false
     end
     unless block_given?
       my_each do |x|
@@ -125,52 +118,45 @@ module Enumerable
     arr
   end
 
-  def my_inject(symbolic = nil, value_given = nil)
-    unless symbolic.nil?
-      if symbolic.class == Integer && !value_given.nil?
-        # switch values because paramaters changed
-        symbol = value_given
-        accumulator = symbolic
-      elsif symbolic.class == Integer && value_given.nil?
-        accumulator = symbolic
-        each do |x|
-          accumulator = yield(accumulator, x)
-        end
-        return accumulator
-      elsif symbolic.class == Symbol && value_given.nil?
-        symbol = symbolic
-        accumulator = 0
-      end
-      case symbol
-      when :+
-        each do |x|
-          accumulator += x
-        end
-      when :-
-        each do |x|
-          accumulator -= x
-        end
-      when :*
-        each do |x|
-          accumulator *= x
-        end
-      when :/
-        each do |x|
-          accumulator /= x
-        end
+  def my_inject(accumulator = nil, value_given = nil)
+    return symbol_logic(value_given, accumulator) if accumulator.class == Integer && !value_given.nil?
+    return symbol_logic(accumulator, 0) if accumulator.class == Symbol
+
+    if accumulator.class == Integer
+      each do |x|
+        accumulator = yield(accumulator, x)
       end
       return accumulator
     end
-    # the block
-    starter = false
     each do |x|
-      if starter == false
-        starter = true
-        accumulator = x
-      else
-        accumulator = yield(accumulator, x)
-      end
+      accumulator = if accumulator.nil?
+                      x
+                    else
+                      yield(accumulator, x)
+                    end
     end
     accumulator
   end
+end
+
+def symbol_logic(symbol, accumulator)
+  case symbol
+  when :+
+    each do |x|
+      accumulator += x
+    end
+  when :-
+    each do |x|
+      accumulator -= x
+    end
+  when :*
+    each do |x|
+      accumulator *= x
+    end
+  when :/
+    each do |x|
+      accumulator /= x
+    end
+  end
+  accumulator
 end
