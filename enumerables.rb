@@ -166,13 +166,10 @@ module Enumerable
     each do |x|
       if starter == false
         starter = true
-        accumulator = if x.class == Integer
-                        0
-                      else
-                        x
-                      end
+        accumulator = x
+      else
+        accumulator = yield(accumulator, x)
       end
-      accumulator = yield(accumulator, x)
     end
     accumulator
   end

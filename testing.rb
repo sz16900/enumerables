@@ -78,3 +78,4 @@ longest = %w[cat sheep bear].my_inject do |memo, word|
   memo.length > word.length ? memo : word
 end
 p longest #=> "sheep"
+p [2, 4, 5].my_inject { |sum, n| sum * n }
