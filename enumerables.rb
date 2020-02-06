@@ -10,12 +10,15 @@ module Enumerable
     self
   end
 
-  def my_each_with_index
+  def my_each_with_index(given_index = nil)
     return enum_for(:my_each_with_index) unless block_given?
-
+    
     index = 0
-    while index < size
-      yield(self[index], index)
+    unless given_index.nil?
+    index = given_index
+    end
+    my_each do |x|
+      yield(x, index)
       index += 1
     end
     self

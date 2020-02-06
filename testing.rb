@@ -12,7 +12,7 @@ p test_array2.my_each
 # my_each_with_index
 p 'my_each-with_index'
 test_array1.my_each_with_index { |x, y| p "item: #{x}, index: #{y}" }
-test_array2.my_each_with_index { |x, y| p "item: #{x}, index: #{y}" }
+test_array2.my_each_with_index(2) { |x, y| p "item: #{x}, index: #{y}" }
 p test_array2.my_each_with_index
 
 # my_select
