@@ -12,11 +12,9 @@ module Enumerable
 
   def my_each_with_index(given_index = nil)
     return enum_for(:my_each_with_index) unless block_given?
-    
+
     index = 0
-    unless given_index.nil?
-    index = given_index
-    end
+    index = given_index unless given_index.nil?
     my_each do |x|
       yield(x, index)
       index += 1
@@ -35,79 +33,70 @@ module Enumerable
   end
 
   def my_all?(pattern = nil)
-    unless pattern.nil?
-      my_each do |x|
-        return false unless pattern === x
-      end
-      return true
-    end
-    unless block_given?
-      my_each do |x|
-        return false unless x
-      end
-      true
-    end
     my_each do |x|
+      unless pattern.nil?
+        return false if pattern === x
+
+        return true
+      end
+      unless block_given?
+        return false unless x
+
+        return true
+      end
       return false unless yield x
     end
     true
   end
 
   def my_any?(pattern = nil)
-    unless pattern.nil?
-      my_each do |x|
+    my_each do |x|
+      unless pattern.nil?
         return true if pattern === x
+
+        return false
       end
-      return false
-    end
-    unless block_given?
-      my_each do |x|
+      unless block_given?
         return true if x
       end
-    end
-    my_each do |x|
       return true if yield x
     end
     false
   end
 
   def my_none?(pattern = nil)
-    unless pattern.nil?
-      my_each do |x|
-        return false if pattern === x
-      end
-      return true
-    end
-    unless block_given?
-      my_each do |x|
-        return false if x
-      end
-      return true
-    end
     my_each do |x|
+      unless pattern.nil?
+        return false if pattern === x
+
+        return true
+      end
+      unless block_given?
+        return false if x
+
+        return true
+      end
       return false if yield x
     end
     true
   end
 
   def my_count(items = nil)
-    unless pattern.nil?
-      repetitions = 0
-      my_each do |x|
-        repetitions += 1 if items == x
+    repetitions = 0
+    my_each do |x|
+      unless pattern.nil?
+        return repetitions += 1 if items == x
+
+        return repetitions
       end
-      return repetitions
-    end
-    unless block_given?
-      repetitions = 0
-      my_each do |x|
-        repetitions += 1 if (yield x) == x
+      unless block_given?
+        return repetitions += 1 if (yield x) == x
+
+        return repetitions
       end
-      return repetitions
     end
-    counting = 0
-    counting += 1 while counting < size
-    counting
+    repetitions += 1 while repetitions < size
+    repetitions
   end
 
   def my_map
@@ -125,14 +114,10 @@ module Enumerable
     return symbol_logic(value_given, accumulator) if accumulator.class == Integer && !value_given.nil?
     return symbol_logic(accumulator, 0) if accumulator.class == Symbol
 
-    if accumulator.class == Integer
-      each do |x|
-        accumulator = yield(accumulator, x)
-      end
-      return accumulator
-    end
     each do |x|
-      accumulator = if accumulator.nil?
+      accumulator = if accumulator.class == Integer
+                      yield(accumulator, x)
+                    elsif accumulator.nil?
                       x
                     else
                       yield(accumulator, x)

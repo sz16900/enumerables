@@ -40,42 +40,42 @@ p [nil, true, 99].any?
 p [].any?
 
 # # my_none?
-# p 'my_none?'
-# p %w[ant bear cat].none? { |word| word.length == 5 } #=> true
-# p %w[ant bear cat].none? { |word| word.length >= 4 } #=> false
-# p %w[ant bear cat].none?(/d/) #=> true
-# p [1, 3.14, 42].none?(Float) #=> false
-# p [].none? #=> true
-# p [nil].none? #=> true
-# p [nil, false].none? #=> true
-# p [nil, false, true].none? #=> false
+p 'my_none?'
+p %w[ant bear cat].none? { |word| word.length == 5 } #=> true
+p %w[ant bear cat].none? { |word| word.length >= 4 } #=> false
+p %w[ant bear cat].none?(/d/) #=> true
+p [1, 3.14, 42].none?(Float) #=> false
+p [].none? #=> true
+p [nil].none? #=> true
+p [nil, false].none? #=> true
+p [nil, false, true].none? #=> false
 
 # # my_count
-# p 'my_count'
-# ary = [1, 2, 4, 2]
-# p ary.count #=> 4
-# p ary.count(2) #=> 2
-# p ary.count(&:even?) #=> 3
+p 'my_count'
+ary = [1, 2, 4, 2]
+p ary.count #=> 4
+p ary.count(2) #=> 2
+p ary.count(&:even?) #=> 3
 
-# # my_map
-# p 'my_map'
-# arr = [1, 2, 3, 4, 5]
-# p arr.my_map { |x| x * x }
-# p (1..2).my_map { |x| x * x }
+# my_map
+p 'my_map'
+arr = [1, 2, 3, 4, 5]
+p arr.my_map { |x| x * x }
+p (1..2).my_map { |x| x * x }
 
-# # my_inject
-# p 'my_inject'
-# # # Sum some numbers
-# p (5..10).my_inject(:+) #=> 45
-# # # Same using a block and inject
-# p (5..10).my_inject { |sum, n| sum + n } #=> 45
-# # # Multiply some numbers
-# p (5..10).my_inject(1, :*) #=> 151200
-# # Same using a block
-# p (5..10).my_inject(1) { |product, n| product * n } #=> 151200
+# my_inject
+p 'my_inject'
+# # Sum some numbers
+p (5..10).my_inject(:+) #=> 45
+# # Same using a block and inject
+p (5..10).my_inject { |sum, n| sum + n } #=> 45
+# # Multiply some numbers
+p (5..10).my_inject(1, :*) #=> 151200
+# Same using a block
+p (5..10).my_inject(1) { |product, n| product * n } #=> 151200
 
-# longest = %w[cat sheep bear].my_inject do |memo, word|
-#   memo.length > word.length ? memo : word
-# end
-# p longest #=> "sheep"
-# p [2, 4, 5].my_inject { |sum, n| sum * n }
+longest = %w[cat sheep bear].my_inject do |memo, word|
+  memo.length > word.length ? memo : word
+end
+p longest #=> "sheep"
+p [2, 4, 5].my_inject { |sum, n| sum * n }
