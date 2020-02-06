@@ -1,5 +1,5 @@
 # enumerables
-Enumerable method or Enumerables clone, written in Ruby in partial fulfillment of the Microverse Cirriculum.
+Enumerables method or Enumerables clone, written in Ruby in partial fulfillment of the Microverse Cirriculum.
 
 ---
 
