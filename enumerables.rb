@@ -34,16 +34,14 @@ module Enumerable
 
   def my_all?(pattern = nil)
     my_each do |x|
-      unless pattern.nil?
-        return false if pattern === x
+      return false if reg_exp(pattern, x) || num_exp(pattern, x)
 
-        return true
-      end
       unless block_given?
         return false unless x
 
         return true
       end
+
       return false unless yield x
     end
     true
@@ -51,11 +49,8 @@ module Enumerable
 
   def my_any?(pattern = nil)
     my_each do |x|
-      unless pattern.nil?
-        return true if pattern === x
+      return true if reg_exp(pattern, x) || num_exp(pattern, x)
 
-        return false
-      end
       unless block_given?
         return true if x
       end
@@ -66,11 +61,8 @@ module Enumerable
 
   def my_none?(pattern = nil)
     my_each do |x|
-      unless pattern.nil?
-        return false if pattern === x
+      return false if reg_exp(pattern, x) || num_exp(pattern, x)
 
-        return true
-      end
       unless block_given?
         return false if x
 
@@ -99,13 +91,14 @@ module Enumerable
     repetitions
   end
 
-  def my_map
-    return enum_for(:my_count) unless block_given?
-
+  def my_map(proc = nil)
     arr = []
     each do |x|
-      arr << (yield x)
-      yield x
+      arr << if block_given?
+               (yield x)
+             else
+               proc.call(x)
+             end
     end
     arr
   end
@@ -128,23 +121,25 @@ module Enumerable
 end
 
 def symbol_logic(symbol, accumulator)
-  case symbol
-  when :+
-    each do |x|
+  each do |x|
+    case symbol
+    when :+
       accumulator += x
-    end
-  when :-
-    each do |x|
+    when :-
       accumulator -= x
-    end
-  when :*
-    each do |x|
+    when :*
       accumulator *= x
-    end
-  when :/
-    each do |x|
+    when :/
       accumulator /= x
     end
   end
   accumulator
+end
+
+def reg_exp(pattern, expression)
+  pattern.class == Regexp && expression =~ pattern
+end
+
+def num_exp(pattern, expression)
+  pattern.class <= Numeric && expression == pattern
 end
