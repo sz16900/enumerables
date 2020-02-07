@@ -34,11 +34,19 @@ module Enumerable
 
   def my_all?(pattern = nil)
     my_each do |x|
-      return false if reg_exp(pattern, x) || num_exp(pattern, x)
-
-      if  !block_given?
+      if !block_given? && pattern.nil?
         return false unless x
-      else
+      end
+      unless pattern.nil?
+        if pattern.is_a? Regexp 
+          return false if !(x =~ pattern)
+        elsif pattern.is_a? Class
+          return false if !x.is_a? pattern 
+        else
+          return false if x != pattern
+        end
+      end
+      if block_given?
         return false unless yield x
       end
     end
@@ -136,5 +144,6 @@ def reg_exp(pattern, expression)
 end
 
 def num_exp(pattern, expression)
-  pattern.class <= Numeric && expression == pattern
+  pattern.class == pattern && expression == pattern
 end
+
