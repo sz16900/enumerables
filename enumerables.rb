@@ -36,13 +36,11 @@ module Enumerable
     my_each do |x|
       return false if reg_exp(pattern, x) || num_exp(pattern, x)
 
-      unless block_given?
+      if  !block_given?
         return false unless x
-
-        return true
+      else
+        return false unless yield x
       end
-
-      return false unless yield x
     end
     true
   end
@@ -76,22 +74,19 @@ module Enumerable
   def my_count(items = nil)
     repetitions = 0
     my_each do |x|
-      unless pattern.nil?
+      unless items.nil?
         return repetitions += 1 if items == x
-
-        return repetitions
       end
       unless block_given?
         return repetitions += 1 if (yield x) == x
-
-        return repetitions
       end
     end
     repetitions += 1 while repetitions < size
-    repetitions
   end
 
   def my_map(proc = nil)
+    return enum_for(:my_map) unless block_given?
+
     arr = []
     each do |x|
       arr << if block_given?
