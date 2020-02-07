@@ -26,9 +26,7 @@ module Enumerable
     select_array = []
     return enum_for(:my_select) unless block_given?
 
-    my_each do |x|
-      select_array << x if yield x
-    end
+    my_each { |x| select_array << x if yield x }
     select_array
   end
 
@@ -60,20 +58,12 @@ module Enumerable
 
   def my_none?(pattern = nil)
     my_each do |x|
-      if !block_given? && pattern.nil?
-        return false if x
-      end
-      unless pattern.nil?
-        if pattern.is_a? Regexp
-          return false if x =~ pattern
-        elsif pattern.is_a? Class
-          return false if x.is_a? pattern
-        else
-          return false if x == pattern
-        end
-      end
       if block_given?
         return false if yield x
+      elsif !pattern.nil?
+        return false if none_check(pattern, x) == false
+      elsif x
+        return false
       end
     end
     true
@@ -145,8 +135,8 @@ def all_check(pattern, exponent)
     return false if exponent !~ pattern
   elsif pattern.is_a? Class
     return false unless exponent.is_a? pattern
-  else
-    return false if exponent != pattern
+  elsif exponent != pattern
+    return false
   end
   true
 end
@@ -156,8 +146,19 @@ def any_check(pattern, exponent)
     return false if pattern =~ exponent
   elsif pattern.is_a? Class
     return true if exponent.is_a? pattern
-  else
-    return true if exponent == pattern
+  elsif exponent == pattern
+    return true
   end
   false
+end
+
+def none_check(pattern, exponent)
+  if pattern.is_a? Regexp
+    return false if pattern =~ exponent
+  elsif pattern.is_a? Class
+    return false if exponent.is_a? pattern
+  elsif exponent == pattern
+    return false
+  end
+  true
 end
