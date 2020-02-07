@@ -64,7 +64,7 @@ module Enumerable
         elsif pattern.is_a? Class
           return true if x.is_a? pattern 
         else
-          return false if x != pattern
+          return true if x == pattern
         end
       end
       if block_given?
@@ -76,14 +76,21 @@ module Enumerable
 
   def my_none?(pattern = nil)
     my_each do |x|
-      return false if reg_exp(pattern, x) || num_exp(pattern, x)
-
-      unless block_given?
+      if !block_given? && pattern.nil?
         return false if x
-
-        return true
       end
-      return false if yield x
+      unless pattern.nil?
+        if pattern.is_a? Regexp 
+          return false if x =~ pattern
+        elsif pattern.is_a? Class
+          return false if x.is_a? pattern 
+        else
+          return false if x == pattern
+        end
+      end
+      if block_given?
+        return false if yield x
+      end
     end
     true
   end
@@ -91,14 +98,19 @@ module Enumerable
   def my_count(items = nil)
     repetitions = 0
     my_each do |x|
-      unless items.nil?
-        return repetitions += 1 if items == x
-      end
-      unless block_given?
-        return repetitions += 1 if (yield x) == x
+      if !items.nil?
+        if items == x
+          repetitions += 1
+        end
+      elsif block_given?
+        if yield x
+          repetitions += 1
+        end
+      else
+        repetitions += 1
       end
     end
-    repetitions += 1 while repetitions < size
+    repetitions
   end
 
   def my_map(proc = nil)

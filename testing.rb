@@ -35,33 +35,38 @@ require './enumerables.rb'
 # p [1,1].my_all?(1) # true
 
 # my_any?
-p %w[ant bear cat].my_any? { |word| word.length >= 3 } #=> true
-p %w[ant bear cat].my_any? { |word| word.length >= 4 } #=> true
-p %w[ant bear cat].my_any?(/d/)                        #=> false
-p [nil, true, 99].my_any?(Integer)                     #=> true
-p [nil, true, 99].my_any?                              #=> true
-p [].my_any?
-p [1,2,3,'s'].my_any?(String)
-p [1,2,3,'s'].my_any?(Numeric)
-p [1,2,3].my_any?(String)
+# p %w[ant bear cat].my_any? { |word| word.length >= 3 } #=> true
+# p %w[ant bear cat].my_any? { |word| word.length >= 4 } #=> true
+# p %w[ant bear cat].my_any?(/d/)                        #=> false
+# p [nil, true, 99].my_any?(Integer)                     #=> true
+# p [nil, true, 99].my_any?                              #=> true
+# p [].my_any? #=> false
+# p [1,2,3,'s'].my_any?(String) #=> true
+# p [1,2,3,'s'].my_any?(Numeric) #=> true
+# p [1,2,3].my_any?(String) #=> false
+# p [1,2].my_any?(1) # true
+# p [1,1].my_any?(1) # true
 
-# # # # my_none?
+# my_none?
 # p 'my_none?'
-# p %w[ant bear cat].none? { |word| word.length == 5 } #=> true
-# p %w[ant bear cat].none? { |word| word.length >= 4 } #=> false
-# p %w[ant bear cat].none?(/d/) #=> true
-# p [1, 3.14, 42].none?(Float) #=> false
-# p [].none? #=> true
-# p [nil].none? #=> true
-# p [nil, false].none? #=> true
-# p [nil, false, true].none? #=> false
+# p %w[ant bear cat].my_none? { |word| word.length == 5 } #=> true
+# p %w[ant bear cat].my_none? { |word| word.length >= 4 } #=> false
+# p %w[ant bear cat].my_none?(/d/) #=> true
+# p [1, 3.14, 42].my_none?(Float) #=> false
+# p [].my_none? #=> true
+# p [nil].my_none? #=> true
+# p [nil, false].my_none? #=> true
+# p [nil, false, true].my_none? #=> false
+# p [1,2,3].my_none?(1) #=> false
+# p [1,2,3].my_none?(4) #=> true
 
 # # # my_count
-# p 'my_count'
-# ary = [1, 2, 4, 2]
-# p ary.count #=> 4
-# p ary.count(2) #=> 2
-# p ary.count(&:even?) #=> 3
+p 'my_count'
+ary = [1, 2, 4, 2]
+p ary.my_count #=> 4
+p ary.my_count(9) #=> 0
+p ary.my_count(2) #=> 2
+p ary.my_count{ |x| x%2==0 } #=> 3
 
 # # my_map
 # p 'my_map'
