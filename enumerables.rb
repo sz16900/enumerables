@@ -34,20 +34,12 @@ module Enumerable
 
   def my_all?(pattern = nil)
     my_each do |x|
-      if !block_given? && pattern.nil?
-        return false unless x
-      end
-      unless pattern.nil?
-        if pattern.is_a? Regexp 
-          return false if !(x =~ pattern)
-        elsif pattern.is_a? Class
-          return false if !x.is_a? pattern 
-        else
-          return false if x != pattern
-        end
-      end
       if block_given?
         return false unless yield x
+      elsif !pattern.nil?
+        return false if all_check(pattern, x) == false
+      else
+        return false unless x
       end
     end
     true
@@ -55,20 +47,12 @@ module Enumerable
 
   def my_any?(pattern = nil)
     my_each do |x|
-      if !block_given? && pattern.nil?
-        return true if x
-      end
-      unless pattern.nil?
-        if pattern.is_a? Regexp 
-          return false if !(x =~ pattern)
-        elsif pattern.is_a? Class
-          return true if x.is_a? pattern 
-        else
-          return true if x == pattern
-        end
-      end
       if block_given?
         return true if yield x
+      elsif !pattern.nil?
+        return true if any_check(pattern, x)
+      elsif x
+        return true
       end
     end
     false
@@ -80,10 +64,10 @@ module Enumerable
         return false if x
       end
       unless pattern.nil?
-        if pattern.is_a? Regexp 
+        if pattern.is_a? Regexp
           return false if x =~ pattern
         elsif pattern.is_a? Class
-          return false if x.is_a? pattern 
+          return false if x.is_a? pattern
         else
           return false if x == pattern
         end
@@ -99,13 +83,9 @@ module Enumerable
     repetitions = 0
     my_each do |x|
       if !items.nil?
-        if items == x
-          repetitions += 1
-        end
+        repetitions += 1 if items == x
       elsif block_given?
-        if yield x
-          repetitions += 1
-        end
+        repetitions += 1 if yield x
       else
         repetitions += 1
       end
@@ -160,10 +140,24 @@ def symbol_logic(symbol, accumulator)
   accumulator
 end
 
-def reg_exp(pattern, expression)
-  pattern.class == Regexp && expression =~ pattern
+def all_check(pattern, exponent)
+  if pattern.is_a? Regexp
+    return false if exponent !~ pattern
+  elsif pattern.is_a? Class
+    return false unless exponent.is_a? pattern
+  else
+    return false if exponent != pattern
+  end
+  true
 end
 
-def num_exp(pattern, expression)
-  pattern.class == pattern && expression == pattern
+def any_check(pattern, exponent)
+  if pattern.is_a? Regexp
+    return false if pattern =~ exponent
+  elsif pattern.is_a? Class
+    return true if exponent.is_a? pattern
+  else
+    return true if exponent == pattern
+  end
+  false
 end

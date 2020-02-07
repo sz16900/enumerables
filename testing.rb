@@ -23,16 +23,17 @@ require './enumerables.rb'
 
 # # my_all?
 # p 'my_all?'
-# p %w[ant bear cat].my_all? { |word| word.length >= 3 }
-# p %w[ant bear cat].my_all? { |word| word.length >= 4 }
-# p %w[ant bear cat].my_all?(/t/)
-# p [1, 2i, 3.14].my_all?(Numeric)
-# p [nil, true, 99].my_all?
+# p %w[ant bear cat].my_all? { |word| word.length >= 3 } #=> true
+# p %w[ant bear cat].my_all? { |word| word.length >= 4 } #=> false
+# p %w[ant bear cat].my_all?(/t/) #=> false
+# p [1, 2i, 3.14].my_all?(Numeric) #=> true
+# p [nil, true, 99].my_all? #=> false
+# p [].my_all? #=> true
 # p [].my_all? # true
-# p [1,2].my_all?(Numeric) # true
-# p [1,2].my_all?(String) # false
-# p [1,2].my_all?(1) # false
-# p [1,1].my_all?(1) # true
+# p [1, 2].my_all?(Numeric) # true
+# p [1, 2].my_all?(String) # false
+# p [1, 2].my_all?(1) # false
+# p [1, 1].my_all?(1) # true
 
 # my_any?
 # p %w[ant bear cat].my_any? { |word| word.length >= 3 } #=> true
@@ -61,12 +62,12 @@ require './enumerables.rb'
 # p [1,2,3].my_none?(4) #=> true
 
 # # # my_count
-p 'my_count'
-ary = [1, 2, 4, 2]
-p ary.my_count #=> 4
-p ary.my_count(9) #=> 0
-p ary.my_count(2) #=> 2
-p ary.my_count{ |x| x%2==0 } #=> 3
+# p 'my_count'
+# ary = [1, 2, 4, 2]
+# p ary.my_count #=> 4
+# p ary.my_count(9) #=> 0
+# p ary.my_count(2) #=> 2
+# p ary.my_count{ |x| x%2==0 } #=> 3
 
 # # my_map
 # p 'my_map'
