@@ -22,26 +22,28 @@ require './enumerables.rb'
 # p test_array2.my_select
 
 # # my_all?
-p 'my_all?'
-p %w[ant bear cat].my_all? { |word| word.length >= 3 }
-p %w[ant bear cat].my_all? { |word| word.length >= 4 }
-p %w[ant bear cat].my_all?(/t/)
-p [1, 2i, 3.14].my_all?(Numeric)
-p [nil, true, 99].my_all?
-p [].my_all? # true
-p [1,2].my_all?(Numeric) # true
-p [1,2].my_all?(String) # false
-p [1,2].my_all?(1) # false
-p [1,1].my_all?(1) # true
+# p 'my_all?'
+# p %w[ant bear cat].my_all? { |word| word.length >= 3 }
+# p %w[ant bear cat].my_all? { |word| word.length >= 4 }
+# p %w[ant bear cat].my_all?(/t/)
+# p [1, 2i, 3.14].my_all?(Numeric)
+# p [nil, true, 99].my_all?
+# p [].my_all? # true
+# p [1,2].my_all?(Numeric) # true
+# p [1,2].my_all?(String) # false
+# p [1,2].my_all?(1) # false
+# p [1,1].my_all?(1) # true
 
 # my_any?
-# p 'my_any?'
-# p %w[ant bear cat].any? { |word| word.length >= 3 }
-# p %w[ant bear cat].any? { |word| word.length >= 4 }
-# p %w[ant bear cat].any?(/d/)
-# p [nil, true, 99].any?(Integer)
-# p [nil, true, 99].any?
-# p [].any?
+p %w[ant bear cat].my_any? { |word| word.length >= 3 } #=> true
+p %w[ant bear cat].my_any? { |word| word.length >= 4 } #=> true
+p %w[ant bear cat].my_any?(/d/)                        #=> false
+p [nil, true, 99].my_any?(Integer)                     #=> true
+p [nil, true, 99].my_any?                              #=> true
+p [].my_any?
+p [1,2,3,'s'].my_any?(String)
+p [1,2,3,'s'].my_any?(Numeric)
+p [1,2,3].my_any?(String)
 
 # # # # my_none?
 # p 'my_none?'
