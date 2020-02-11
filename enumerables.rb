@@ -131,7 +131,7 @@ def symbol_logic(symbol, accumulator)
 end
 
 def all_check(pattern, exponent)
-  if pattern.is_a? Regexp
+  if pattern.is_a? Regexp 
     return false if exponent !~ pattern
   elsif pattern.is_a? Class
     return false unless exponent.is_a? pattern
